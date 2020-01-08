@@ -1,2 +1,2 @@
 # LibramePlayer
-# ![Alt text](LibramePlayer.png "LibramePlayer") LibramePlayer
+# ![Alt text](LibramePlayer.png "LibramePlayer")
