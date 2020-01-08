@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>..\..\LibramePlayer.ico</ApplicationIcon>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>1.0.15.311</Version>
+    <AssemblyVersion>1.0.15.311</AssemblyVersion>
+    <FileVersion>1.0.2001.81</FileVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\bin\</OutputPath>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\bin\</OutputPath>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="Librame.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignColors" Version="1.2.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\LibramePlayer\LibramePlayer.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Librame.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="InternalResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InternalResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Update="InternalResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>InternalResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="playlist.lpp.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

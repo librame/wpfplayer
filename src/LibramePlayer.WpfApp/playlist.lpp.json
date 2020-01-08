@@ -1,0 +1,23 @@
+{
+    "Title": "默认播放列表",
+    "Descr": "煲机专用播放列表",
+    "Author": "Librame",
+    "SinglePlaybackDuration": "00:05:00",
+    "SinglePlaybackInterval": "00:00:30",
+    "StopPlaybackDuration": "00:10:00",
+    "Looping": 0,
+    "Medias": [
+        {
+            "Id": 1,
+            "Title": "Ina Wroldsen - I Wanted You.mp3",
+            "Source": "file:///e:/Music/Ina Wroldsen - I Wanted You.mp3",
+            "Volume": "0.3-0.7"
+        },
+        {
+            "Id": 2,
+            "Title": "丫蛋蛋 - 大田後生仔 (加速版).mp3",
+            "Source": "file:///e:/Music/丫蛋蛋 - 大田後生仔 (加速版).mp3",
+            "Volume": "0.6"
+        }
+    ]
+}
