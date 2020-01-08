@@ -1,2 +1,2 @@
 # LibramePlayer
-WPF MediaPlayer
+# ![Alt text](LibramePlayer.png "LibramePlayer") LibramePlayer
