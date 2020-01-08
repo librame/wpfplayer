@@ -53,7 +53,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="playlist.lpp.json">
+    <None Update="playlist.lppl.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

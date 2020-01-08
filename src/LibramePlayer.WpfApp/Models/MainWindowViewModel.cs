@@ -8,7 +8,7 @@ namespace LibramePlayer.WpfApp.Models
     public class MainWindowViewModel
     {
         private static readonly string _playbackFileName
-            = PlaylistHelper.CurrentDirectory.CombinePath($"_playback{AppHelper.PlaylistExtension}");
+            = PlaylistHelper.CurrentDirectory.CombinePath(AppHelper.Options.PlaybackFileName);
 
         private PlaylistOptions _playlist;
 

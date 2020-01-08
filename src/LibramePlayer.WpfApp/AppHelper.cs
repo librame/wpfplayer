@@ -1,45 +1,42 @@
 ﻿using Librame.Extensions;
-using System.Configuration;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace LibramePlayer.WpfApp
 {
     public static class AppHelper
     {
-        public static string DefaultVolume
-            => ConfigurationManager.AppSettings[nameof(DefaultVolume)];
-
-        public static string[] MediaExtensions
-            => ConfigurationManager.AppSettings[nameof(MediaExtensions)].Split(',');
-
-        public static string PlayingMark
-            => ConfigurationManager.AppSettings[nameof(PlayingMark)];
-
-        public static string PlaylistExtension
-            => ConfigurationManager.AppSettings[nameof(PlaylistExtension)];
-
-        public static string PlaylistFilter
-            => ConfigurationManager.AppSettings[nameof(PlaylistFilter)];
-
-        public static string VolumeRangeSeparator
-            => ConfigurationManager.AppSettings[nameof(VolumeRangeSeparator)];
+        private static readonly string _optionsFileName
+            = $"{typeof(AppHelper).Assembly.GetDisplayName()}.json";
 
 
-        public static double DefaultVolumeForPlayer
+        static AppHelper()
+        {
+            if (!File.Exists(_optionsFileName))
+                File.WriteAllText(_optionsFileName, JsonConvert.SerializeObject(new AppOptions(), Formatting.Indented));
+
+            Options = JsonConvert.DeserializeObject<AppOptions>(File.ReadAllText(_optionsFileName));
+        }
+
+
+        public static AppOptions Options { get; private set; }
+
+
+        public static double DefaultVolume
         {
             get
             {
-                if (DefaultVolume.IsEmpty())
+                if (Options.DefaultVolume.IsEmpty())
                     return 0.7;
 
-                if (DefaultVolume.Contains(VolumeRangeSeparator))
-                {
-                    // 默认使用最小音量
-                    return double.Parse(DefaultVolume.SplitPair(VolumeRangeSeparator).Key);
-                }
+                if (Options.DefaultVolume.Contains(Options.VolumeRangeSeparator))
+                    return double.Parse(Options.DefaultVolume.SplitPair(Options.VolumeRangeSeparator).Key);
 
-                return double.Parse(DefaultVolume);
+                return double.Parse(Options.DefaultVolume);
             }
         }
 
+        public static string[] MediaExtensions
+            => Options.MediaExtensions.Split(',');
     }
 }

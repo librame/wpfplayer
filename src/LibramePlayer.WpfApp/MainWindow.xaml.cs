@@ -389,15 +389,15 @@ namespace LibramePlayer.WpfApp
 
         private void ChangeLastPlaylistItemState()
         {
-            if (_lastPlaylistItem.Text.StartsWith(AppHelper.PlayingMark))
+            if (_lastPlaylistItem.Text.StartsWith(AppHelper.Options.PlayingMark))
             {
-                _lastPlaylistItem.Text = _lastPlaylistItem.Text.TrimStart(AppHelper.PlayingMark);
+                _lastPlaylistItem.Text = _lastPlaylistItem.Text.TrimStart(AppHelper.Options.PlayingMark);
                 _lastPlaylistItem.Foreground = tbkMediaTitle.Foreground;
                 _lastPlaylistItem.FontWeight = FontWeights.Normal;
             }
             else
             {
-                _lastPlaylistItem.Text = AppHelper.PlayingMark + _lastPlaylistItem.Text;
+                _lastPlaylistItem.Text = AppHelper.Options.PlayingMark + _lastPlaylistItem.Text;
                 _lastPlaylistItem.Foreground = MaterialDesignHelper.PrimaryHueMidBrush;
                 _lastPlaylistItem.FontWeight = FontWeights.Bold;
             }
@@ -501,7 +501,7 @@ namespace LibramePlayer.WpfApp
                     continue;
                 }
 
-                var media = MediaOptions.Create(lbxPlaylist.Items.Count + 1, file, AppHelper.DefaultVolume);
+                var media = MediaOptions.Create(lbxPlaylist.Items.Count + 1, file, AppHelper.Options.DefaultVolume);
                 _viewModel.Playlist.Medias.Add(media);
                 btnSave.IsEnabled = true;
 
@@ -561,8 +561,8 @@ namespace LibramePlayer.WpfApp
         {
             var dialog = new OpenFileDialog();
             dialog.InitialDirectory = Directory.GetCurrentDirectory();
-            dialog.DefaultExt = AppHelper.PlaylistExtension;
-            dialog.Filter = AppHelper.PlaylistFilter;
+            dialog.DefaultExt = AppHelper.Options.PlaylistExtension;
+            dialog.Filter = AppHelper.Options.PlaylistFilter;
 
             if ((bool)dialog.ShowDialog())
                 LoadPlaylist(dialog.FileName);

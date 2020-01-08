@@ -149,15 +149,15 @@ namespace LibramePlayer.WpfApp
         {
             if (Media.Volume.IsEmpty())
             {
-                _player.Volume = AppHelper.DefaultVolumeForPlayer;
+                _player.Volume = AppHelper.DefaultVolume;
             }
-            else if (!Media.Volume.Contains(AppHelper.VolumeRangeSeparator))
+            else if (!Media.Volume.Contains(AppHelper.Options.VolumeRangeSeparator))
             {
                 _player.Volume = double.Parse(Media.Volume);
             }
             else
             {
-                var range = Media.Volume.SplitPair(AppHelper.VolumeRangeSeparator);
+                var range = Media.Volume.SplitPair(AppHelper.Options.VolumeRangeSeparator);
                 var min = double.Parse(range.Key);
 
                 if (_player.NaturalDuration.HasTimeSpan)
