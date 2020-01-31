@@ -5,9 +5,9 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>..\..\LibramePlayer.ico</ApplicationIcon>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.0.15.311</Version>
-    <AssemblyVersion>1.0.15.311</AssemblyVersion>
-    <FileVersion>1.0.2001.81</FileVersion>
+    <Version>1.0.38.210</Version>
+    <AssemblyVersion>1.0.38.210</AssemblyVersion>
+    <FileVersion>1.0.2001.131</FileVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 

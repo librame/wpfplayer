@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.0.15.211</Version>
-    <AssemblyVersion>1.0.15.211</AssemblyVersion>
-    <FileVersion>1.0.2001.81</FileVersion>
+    <Version>1.0.38.210</Version>
+    <AssemblyVersion>1.0.38.210</AssemblyVersion>
+    <FileVersion>1.0.2001.131</FileVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
@@ -17,7 +17,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Librame.Extensions.Core" Version="7.2.982.211" />
+    <PackageReference Include="Librame.Extensions.Core" Version="7.3.1021.210" />
   </ItemGroup>
 
 </Project>
