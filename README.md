@@ -1,5 +1,5 @@
 ## LibramePlayer
-## ![LibramePlayer Preview](LibramePlayer.png "LibramePlayer")
+## ![LibramePlayer Preview](/LibramePlayer.png "LibramePlayer")
 
 ## Playlist (*.lppl.json)
 
