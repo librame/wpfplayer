@@ -1,6 +1,7 @@
 ﻿using Librame.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace LibramePlayer
 {
@@ -47,18 +48,7 @@ namespace LibramePlayer
 
 
         public Uri GetSourceUri()
-        {
-            var source = Source.NotEmpty(nameof(Source));
-
-            if (source.Contains("\\"))
-                source = source.Replace("\\", "/");
-
-            // 支持相对路径（要求以“/”路径分隔符为前导符）
-            if (source.StartsWith("./"))
-                source = PlaylistHelper.CurrentDirectory.CombinePath(source);
-
-            return new Uri(source.EnsureLeading("file:///"));
-        }
+            => new Uri(StandardizeSource(Source));
 
 
         public static MediaOptions Create(int id, string source, string volume, string title = null)
@@ -68,10 +58,27 @@ namespace LibramePlayer
             return new MediaOptions
             {
                 Id = id,
-                Source = source,
+                Source = StandardizeSource(source),
                 Title = title,
                 Volume = volume
             };
+        }
+
+        public static string StandardizeSource(string source)
+        {
+            source.NotEmpty(nameof(source));
+
+            // 支持相对路径（要求以“/”路径分隔符为前导符）
+            if (source.StartsWith("./"))
+                source = PlaylistHelper.CurrentDirectory.CombinePath(source);
+
+            if (Path.IsPathFullyQualified(source))
+            {
+                source = source.Replace("\\", "/");
+                source = source.EnsureLeading("file:///");
+            }
+
+            return source;
         }
 
     }

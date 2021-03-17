@@ -47,7 +47,14 @@ namespace LibramePlayer.WpfApp.Models
         }
 
 
+        public void ClearPlayback()
+        {
+            Playback.Records.Clear();
+            SavePlayback();
+        }
+
         public void SavePlayback()
             => PlaybackHelper.SaveOptions(Playback, _playbackFileName);
+
     }
 }

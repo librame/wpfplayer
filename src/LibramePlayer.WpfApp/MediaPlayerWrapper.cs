@@ -106,7 +106,7 @@ namespace LibramePlayer.WpfApp
         }
 
 
-        public void Play(bool resetTotalPlaybackDuration = true)
+        public void Play(bool resetTotalPlaybackDuration = false)
         {
             if (State == PlayState.Playing)
                 Stop(resetTotalPlaybackDuration);
@@ -130,7 +130,7 @@ namespace LibramePlayer.WpfApp
             }
         }
 
-        public void Stop(bool resetTotalPlaybackDuration = true)
+        public void Stop(bool resetTotalPlaybackDuration = false)
         {
             _player.Stop();
             _playingTimer.Stop();

@@ -119,7 +119,7 @@ namespace LibramePlayer.WpfApp
                 sldVolume.Value = wrapper.DynamicUpdateVolume();
                 pbrPlaying.Value = wrapper.Position.TotalSeconds;
                 tbkCurrentTime.Text = wrapper.Position.ToStandardString();
-                tbxPlayerTitle.Text = $"{PlayerTitle} - {wrapper.TotalPlaybackDuration.ToStandardString()}";
+                tbxPlayerTitle.Text = $"{PlayerTitle} - Total: {wrapper.TotalPlaybackDuration.ToStandardString()}";
 
                 _lastRecord.TotalPlaybackDuration = wrapper.TotalPlaybackDuration.ToStandardString();
                 _lastRecord.LastMediaId = wrapper.Media.Id;
@@ -257,7 +257,7 @@ namespace LibramePlayer.WpfApp
             var icon = btnPlay.Content as PackIcon;
             if (icon.Kind == PackIconKind.Play)
             {
-                _viewModel.PlayerWrapper.Play(_viewModel.PlayerWrapper.State != PlayState.Paused);
+                _viewModel.PlayerWrapper.Play(); //_viewModel.PlayerWrapper.State != PlayState.Paused
                 btnPlay.ToolTip = InternalResources.Pause;
             }
             else
@@ -289,6 +289,17 @@ namespace LibramePlayer.WpfApp
 
         #region Playlist
 
+        private void LoadPlaylist()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.InitialDirectory = Directory.GetCurrentDirectory();
+            dialog.DefaultExt = AppHelper.Options.PlaylistExtension;
+            dialog.Filter = AppHelper.Options.PlaylistFilter;
+
+            if ((bool)dialog.ShowDialog())
+                LoadPlaylist(dialog.FileName);
+        }
+
         private void LoadPlaylist(string fileName)
         {
             _lastRecord = _viewModel.Playback.Records.SingleOrDefault(r => r.Playlist == fileName);
@@ -302,9 +313,11 @@ namespace LibramePlayer.WpfApp
                 _lastRecord.Playlist = fileName;
 
             _viewModel.Playlist = PlaylistHelper.LoadOptions(fileName);
+            _viewModel.ClearPlayback();
 
             EnableControls();
         }
+
 
         private bool _isPlaylistFirstPlay = false;
         private MediaOptions BindPlaylist(PlaylistOptions options)
@@ -380,7 +393,7 @@ namespace LibramePlayer.WpfApp
                 }
 
                 var item = new TextBlock();
-                item.Text = $"{media.Id.FormatString(mediasCountLength)}. {media.Title}";
+                item.Text = $"{media.Id.FormatString(mediasCountLength)}. {media.Title} [{media.Volume}]";
                 item.Tag = media;
 
                 lbxPlaylist.Items.Add(item);
@@ -445,6 +458,12 @@ namespace LibramePlayer.WpfApp
         {
             EnableControls();
 
+            if (_viewModel.Playlist.IsNull())
+            {
+                LoadPlaylist();
+                return;
+            }
+
             if (_lastPlaylistItem.IsNotNull())
                 ChangeLastPlaylistItemState();
 
@@ -456,12 +475,12 @@ namespace LibramePlayer.WpfApp
             tbkMediaTitle.Text = media.Title;
 
             _viewModel.PlayerWrapper.Load(media);
-            _viewModel.PlayerWrapper.Play(_viewModel.PlayerWrapper.State != PlayState.Paused);
+            _viewModel.PlayerWrapper.Play(); //_viewModel.PlayerWrapper.State == PlayState.Stoped
         }
 
         private void lbxPlaylist_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (_lastRecord.Playlist.IsEmpty())
+            if (_lastRecord.IsNull() || _lastRecord.Playlist.IsEmpty())
                 return;
 
             var meu = new ContextMenu();
@@ -497,8 +516,16 @@ namespace LibramePlayer.WpfApp
                 var extension = Path.GetExtension(file);
                 if (!AppHelper.MediaExtensions.Any(ext => ext == extension))
                 {
-                    Snackbar.MessageQueue.Enqueue(InternalResources.NotSupportedMediaExtensionFormat.Format(extension));
-                    continue;
+                    if (file.EndsWith(AppHelper.Options.PlaylistExtension))
+                    {
+                        LoadPlaylist(file);
+                        return;
+                    }
+                    else
+                    {
+                        Snackbar.MessageQueue.Enqueue(InternalResources.NotSupportedMediaExtensionFormat.Format(extension));
+                        continue;
+                    }
                 }
 
                 var media = MediaOptions.Create(lbxPlaylist.Items.Count + 1, file, AppHelper.Options.DefaultVolume);
@@ -559,13 +586,7 @@ namespace LibramePlayer.WpfApp
 
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog();
-            dialog.InitialDirectory = Directory.GetCurrentDirectory();
-            dialog.DefaultExt = AppHelper.Options.PlaylistExtension;
-            dialog.Filter = AppHelper.Options.PlaylistFilter;
-
-            if ((bool)dialog.ShowDialog())
-                LoadPlaylist(dialog.FileName);
+            LoadPlaylist();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -592,6 +613,9 @@ namespace LibramePlayer.WpfApp
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ButtonState != MouseButtonState.Pressed)
+                return;
+
             DragMove();
 
             _lastLeft = Left;
@@ -652,6 +676,8 @@ namespace LibramePlayer.WpfApp
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.PlayerWrapper.Dispose();
+
+            _viewModel.ClearPlayback();
 
             Close();
         }
